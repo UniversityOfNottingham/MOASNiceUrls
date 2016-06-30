@@ -21,6 +21,6 @@ class MOASNiceUrls_Strategy_Collection implements MOASNiceUrls_UrlInterface
     private function buildQuery($collection)
     {
         $title = metadata($collection, array('Dublin Core', 'Title'));
-        return "'" . str_replace(' ', '+', $title) . "'";
+        return '"' . str_replace(' ', '+', $title) . '"';
     }
 }
