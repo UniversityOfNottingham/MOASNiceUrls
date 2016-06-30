@@ -19,7 +19,7 @@ class MOASNiceUrls_Controller_Plugin_SlugGenerateFilter extends Zend_Controller_
     protected $_defaultRoutes = array(
         array('module' => 'default', 'controller' => 'items',
             'actions' => array('add', 'edit', 'change-type')),
-        array('module' => 'default', 'controller' => 'collections',
+        array('module' => 'default', 'controller' => 'collection',
             'actions' => array('add', 'edit', 'change-type')),
         array('module' => 'default', 'controller' => 'elements',
             'actions' => array('element-form'))
@@ -38,7 +38,7 @@ class MOASNiceUrls_Controller_Plugin_SlugGenerateFilter extends Zend_Controller_
         $currentModule = is_null($request->getModuleName()) ? 'default' : $request->getModuleName();
         $currentController = $request->getControllerName();
         $currentAction = $request->getActionName();
-        
+
         $routes = apply_filters('moas_nice_urls_routes', $this->_defaultRoutes);
 
         foreach ($routes as $route) {
