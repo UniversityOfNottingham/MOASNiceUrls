@@ -4,5 +4,5 @@ MOASNiceUrls
 [![Build Status](https://scrutinizer-ci.com/g/UniversityOfNottingham/MOASNiceUrls/badges/build.png?b=master)](https://scrutinizer-ci.com/g/UniversityOfNottingham/MOASElements/build-status/master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/UniversityOfNottingham/MOASNiceUrls/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/UniversityOfNottingham/MOASElements/?branch=master)
 
-THis plugin allows items and collections to be access via short url's based of metadata
+This plugin allows items and collections to be access via short url's based of metadata
 
