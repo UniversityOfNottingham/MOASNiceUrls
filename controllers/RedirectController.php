@@ -15,6 +15,7 @@ class MOASNiceUrls_RedirectController extends Omeka_Controller_AbstractActionCon
     {
         $elementID = $this->_getParam('id');
         $element = $this->_helper->db->getTable('ElementText')->find($elementID);
-        var_dump($element->record_type);exit;
+
+        $this->_helper->json($element->record_type);
     }
 }

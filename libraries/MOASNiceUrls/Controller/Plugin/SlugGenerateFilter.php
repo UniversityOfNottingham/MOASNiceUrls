@@ -38,9 +38,7 @@ class MOASNiceUrls_Controller_Plugin_SlugGenerateFilter extends Zend_Controller_
         $currentModule = is_null($request->getModuleName()) ? 'default' : $request->getModuleName();
         $currentController = $request->getControllerName();
         $currentAction = $request->getActionName();
-
-        // Allow plugins to register routes that contain form inputs rendered by
-        // Omeka_View_Helper_ElementForm::_displayFormInput().
+        
         $routes = apply_filters('moas_nice_urls_routes', $this->_defaultRoutes);
 
         foreach ($routes as $route) {
