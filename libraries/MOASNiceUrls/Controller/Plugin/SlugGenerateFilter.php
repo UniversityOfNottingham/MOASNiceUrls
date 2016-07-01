@@ -54,7 +54,7 @@ class MOASNiceUrls_Controller_Plugin_SlugGenerateFilter extends Zend_Controller_
 
             $element = $db->getTable('MOASNiceUrlsElement')->getSlugElement();
             $elementSet = $db->getTable('ElementSet')->find($element->element_set_id);
-            add_filter(array('ElementInput', $route['type'], $elementSet->name, $element->name),
+            add_filter(array('ElementInput', 'Item', $elementSet->name, $element->name),
                 array($this, 'filterElementInput'));
 
             break;
@@ -63,14 +63,24 @@ class MOASNiceUrls_Controller_Plugin_SlugGenerateFilter extends Zend_Controller_
 
     public function filterElementInput($components, $args)
     {
+        $errorID = str_replace('[', '-', $args['input_name_stem']);
+        $errorID = str_replace(']', '', $errorID) . '-error';
+
         $components['html_checkbox'] = false;
         $components['input'] =
             get_view()->formText($args['input_name_stem'] . '[text]', $args['value'],
-                array('style' => 'width: 250px;','class' => 'js-moas-slug-input')
+                array(
+                    'style' => 'width: 285px;margin-right: 10px;',
+                    'class' => 'js-moas-slug-input',
+                    'onChange' => 'Omeka.MOASUrlStuff.checkSlug(this)'
+                )
             ).
-            get_view()->formButton('', 'generate', array(
-                'class' => 'js-moas-slug-generate'
-            ));
+            get_view()->formButton('', 'Generate', array(
+                'class' => 'js-moas-slug-generate',
+                'data-target' => $args['input_name_stem'] . '[text]',
+                'onClick' => 'Omeka.MOASUrlStuff.generateSlug("'.$args['input_name_stem'] . '[text]'.'")'
+            )).
+            "<div id='". $errorID . "' class='visually-hidden validation-error'>This slug already exists, please choose another</div>";
 
         return $components;
     }

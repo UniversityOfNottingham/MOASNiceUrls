@@ -1,0 +1,9 @@
+.visually-hidden {
+    display: none;
+}
+
+.validation-error {
+    color: #914E33;
+    font-weight: bold;
+}
+

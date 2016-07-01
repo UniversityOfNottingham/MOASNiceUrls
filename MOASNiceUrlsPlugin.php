@@ -17,33 +17,34 @@ class MOASNiceUrlsPlugin extends Omeka_Plugin_AbstractPlugin
         'uninstall_message'
     );
 
-    public function hookAdminHead($args)
+    public function hookAdminHead()
     {
         queue_js_file('moas-niceurls');
+        queue_css_file('moas-niceurls');
     }
 
     public function hookDefineRoutes($args)
     {
         if (is_admin_theme()) {
-            return;
-        }
-
-        /** @var Zend_Controller_Router_Rewrite $router */
-        $router = $args['router'];
-        $slugs = get_db()->getTable('MOASNiceUrlsElement')->getSlugs();
-        foreach ($slugs as $slug) {
-            $router->addRoute(
-                'moas_nice_urls_redirect_' . $slug['slug'],
-                new Zend_Controller_Router_Route(
-                    $slug['slug'],
-                    array(
-                        'module' => 'moas-nice-urls',
-                        'controller' => 'redirect',
-                        'action' => 'redirect',
-                        'id' => $slug['id']
+            $args['router']->addConfig(new Zend_Config_Ini(
+                __DIR__.'/routes.ini'
+            ));
+        } else {
+            $router = $args['router'];
+            foreach (MOASNiceUrls_Helpers_Slugs::fetchSlugs() as $slug) {
+                $router->addRoute(
+                    'moas_nice_urls_redirect_' . $slug['slug'],
+                    new Zend_Controller_Router_Route(
+                        $slug['slug'],
+                        array(
+                            'module' => 'moas-nice-urls',
+                            'controller' => 'redirect',
+                            'action' => 'redirect',
+                            'id' => $slug['id']
+                        )
                     )
-                )
-            );
+                );
+            }
         }
     }
     
