@@ -22,7 +22,7 @@ class MOASNiceUrls_Controller_Plugin_SlugGenerateFilter extends Zend_Controller_
         array('module' => 'default', 'controller' => 'collections',
             'actions' => array('add', 'edit'), 'type' => 'Collection'),
         array('module' => 'default', 'controller' => 'elements',
-            'actions' => array('element-form'))
+            'actions' => array('element-form'),'type' => 'Item')
     );
 
     /**
@@ -54,7 +54,7 @@ class MOASNiceUrls_Controller_Plugin_SlugGenerateFilter extends Zend_Controller_
 
             $element = $db->getTable('MOASNiceUrlsElement')->getSlugElement();
             $elementSet = $db->getTable('ElementSet')->find($element->element_set_id);
-            add_filter(array('ElementInput', 'Item', $elementSet->name, $element->name),
+            add_filter(array('ElementInput', $route['type'], $elementSet->name, $element->name),
                 array($this, 'filterElementInput'));
 
             break;

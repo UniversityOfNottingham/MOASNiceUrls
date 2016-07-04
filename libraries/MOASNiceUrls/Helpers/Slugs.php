@@ -11,6 +11,11 @@
 class MOASNiceUrls_Helpers_Slugs
 {
 
+    /**
+     * Fetch all the nice url slugs that exist along with their id
+     *
+     * @return array
+     */
     public static function fetchSlugs()
     {
         $db = get_db();
@@ -23,7 +28,13 @@ class MOASNiceUrls_Helpers_Slugs
 
         return $slugs;
     }
-    
+
+    /**
+     * Check the given slug exists
+     *
+     * @param string $slug the slug to check
+     * @return bool does this slug exist
+     */
     public static function checkSlugExists($slug)
     {
         $elementID = static::getSlugElementID();
@@ -52,6 +63,11 @@ class MOASNiceUrls_Helpers_Slugs
         return MOASNiceUrls_Helpers_String::truncateWords($slug, $length);
     }
 
+    /**
+     * Get the element id for the one element that stores slugs
+     *
+     * @return mixed
+     */
     protected static function getSlugElementID()
     {
         $db = get_db();
