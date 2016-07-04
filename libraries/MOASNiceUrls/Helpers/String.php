@@ -58,7 +58,7 @@ class MOASNiceUrls_Helpers_String
     public static function replaceLast($needle, $with, $haystack)
     {
         $pos = strrpos($haystack, $needle);
-        if($pos !== false)
+        if ($pos !== false)
         {
             $haystack = substr_replace($haystack, $with, $pos, strlen($needle));
         }

@@ -16,7 +16,7 @@ class MOASNiceUrls_IndexController extends Omeka_Controller_AbstractActionContro
         $title = $this->_getParam('title');
         $slug = MOASNiceUrls_Helpers_Slugs::slugify($title);
 
-        if (MOASNiceUrls_Helpers_Slugs::checkSlugExists($slug)){
+        if (MOASNiceUrls_Helpers_Slugs::checkSlugExists($slug)) {
             $length = 45;
             while (MOASNiceUrls_Helpers_Slugs::checkSlugExists($slug) && $length < 80) {
                 $slug = MOASNiceUrls_Helpers_Slugs::slugify($title, $length);
