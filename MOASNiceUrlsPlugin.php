@@ -28,12 +28,8 @@ class MOASNiceUrlsPlugin extends Omeka_Plugin_AbstractPlugin
     {
         /** @var Item $record */
         $record = $args['record'];
-        $elements = $args['post']['Elements'];
 
-        $slugElement = MOASNiceUrls_Helpers_Slugs::getSlugElementID();
-        $newSlugs = $elements[$slugElement];
-
-        $errors = $this->validateSlugs($newSlugs, $record->id, 'Item');
+        $errors = $this->validateSlugs($args['post']['Elements'], $record->id, 'Item');
         if (!empty($errors)) {
             $record->addError('URL Slug', $this->buildErrorString($errors));
         }
@@ -43,12 +39,8 @@ class MOASNiceUrlsPlugin extends Omeka_Plugin_AbstractPlugin
     {
         /** @var Collection $record */
         $record = $args['record'];
-        $elements = $args['post']['Elements'];
 
-        $slugElement = MOASNiceUrls_Helpers_Slugs::getSlugElementID();
-        $newSlugs = $elements[$slugElement];
-
-        $errors = $this->validateSlugs($newSlugs, $record->id, 'Collection');
+        $errors = $this->validateSlugs($args['post']['Elements'], $record->id, 'Collection');
         if (!empty($errors)) {
             $record->addError('URL Slug', $this->buildErrorString($errors));
         }
@@ -95,8 +87,11 @@ class MOASNiceUrlsPlugin extends Omeka_Plugin_AbstractPlugin
             , '<p><strong>', '</strong>', '</p>');
     }
 
-    private function validateSlugs($slugs, $recordId, $recordType)
+    private function validateSlugs($elements, $recordId, $recordType)
     {
+        $slugElement = MOASNiceUrls_Helpers_Slugs::getSlugElementID();
+        $slugs = $elements[$slugElement];
+
         $currentSlugs = MOASNiceUrls_Helpers_Slugs::getRecordsSlugs($recordId, $recordType);
         $filteredSlugs = array_filter($slugs, array(new MOASNiceUrls_Filters_ExistingSlugs($currentSlugs), 'filter'));
         $errors = [];
