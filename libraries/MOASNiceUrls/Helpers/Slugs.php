@@ -83,7 +83,7 @@ class MOASNiceUrls_Helpers_Slugs
         $elements = $db->getTable('ElementText')->findBy(array(
             'element_id' => $elementID,
             'record_id' => $id,
-            'record_type'
+            'record_type' => $type
         ));
 
         foreach ($elements as $element) {
