@@ -68,9 +68,28 @@ class MOASNiceUrls_Helpers_Slugs
      *
      * @return mixed
      */
-    protected static function getSlugElementID()
+    public static function getSlugElementID()
     {
         $db = get_db();
         return  $db->getTable('MOASNiceUrlsElement')->getSlugElement()->id;
+    }
+
+    public static function getRecordsSlugs($id, $type)
+    {
+        $elementID = static::getSlugElementID();
+        $db = get_db();
+        $slugs = [];
+
+        $elements = $db->getTable('ElementText')->findBy(array(
+            'element_id' => $elementID,
+            'record_id' => $id,
+            'record_type'
+        ));
+
+        foreach ($elements as $element) {
+            $slugs[] = array('slug' => $element->text, 'id' => $element->id);
+        }
+
+        return $slugs;
     }
 }

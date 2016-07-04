@@ -22,7 +22,7 @@ class MOASNiceUrls_Controller_Plugin_SlugGenerateFilter extends Zend_Controller_
         array('module' => 'default', 'controller' => 'collections',
             'actions' => array('add', 'edit'), 'type' => 'Collection'),
         array('module' => 'default', 'controller' => 'elements',
-            'actions' => array('element-form'),'type' => 'Item')
+            'actions' => array('element-form'), 'type' => 'Item')
     );
 
     /**

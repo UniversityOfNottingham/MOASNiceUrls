@@ -13,12 +13,18 @@ class MOASNiceUrls_IndexController extends Omeka_Controller_AbstractActionContro
     public function createAction()
     {
         $response = [];
-        $slug = MOASNiceUrls_Helpers_Slugs::slugify($this->_getParam('title'));
+        $title = $this->_getParam('title');
+        $slug = MOASNiceUrls_Helpers_Slugs::slugify($title);
 
-        if (!MOASNiceUrls_Helpers_Slugs::checkSlugExists($slug))
-        {
-            $response['slug'] = $slug;
+        if (MOASNiceUrls_Helpers_Slugs::checkSlugExists($slug)){
+            $length = 45;
+            while (MOASNiceUrls_Helpers_Slugs::checkSlugExists($slug) && $length < 80) {
+                $slug = MOASNiceUrls_Helpers_Slugs::slugify($title, $length);
+                $length += 5;
+            }
         }
+
+        $response['slug'] = $slug;
         
         $this->_helper->json($response);
     }
@@ -32,5 +38,4 @@ class MOASNiceUrls_IndexController extends Omeka_Controller_AbstractActionContro
         $response['exists'] = MOASNiceUrls_Helpers_Slugs::checkSlugExists($slug);
         $this->_helper->json($response);
     }
-
 }

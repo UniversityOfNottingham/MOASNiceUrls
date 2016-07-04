@@ -12,6 +12,7 @@ class MOASNiceUrlsPlugin extends Omeka_Plugin_AbstractPlugin
 {
     protected $_hooks = array(
         'admin_head',
+        'before_save_item',
         'define_routes',
         'initialize',
         'uninstall_message'
@@ -22,6 +23,37 @@ class MOASNiceUrlsPlugin extends Omeka_Plugin_AbstractPlugin
         queue_js_file('moas-niceurls');
         queue_css_file('moas-niceurls');
     }
+
+    public function hookBeforeSaveItem($args)
+    {
+        /** @var Item $record */
+        $record = $args['record'];
+        $elements = $args['post']['Elements'];
+
+        $slugElement = MOASNiceUrls_Helpers_Slugs::getSlugElementID();
+        $newSlugs = $elements[$slugElement];
+
+        $errors = $this->validateSlugs($newSlugs, $record->id, 'Item');
+        if (!empty($errors)) {
+            $record->addError('URL Slug', $this->buildErrorString($errors));
+        }
+    }
+
+    public function hookBeforeSaveCollection($args)
+    {
+        /** @var Collection $record */
+        $record = $args['record'];
+        $elements = $args['post']['Elements'];
+
+        $slugElement = MOASNiceUrls_Helpers_Slugs::getSlugElementID();
+        $newSlugs = $elements[$slugElement];
+
+        $errors = $this->validateSlugs($newSlugs, $record->id, 'Collection');
+        if (!empty($errors)) {
+            $record->addError('URL Slug', $this->buildErrorString($errors));
+        }
+    }
+
 
     public function hookDefineRoutes($args)
     {
@@ -61,5 +93,32 @@ class MOASNiceUrlsPlugin extends Omeka_Plugin_AbstractPlugin
     {
         echo __('%sWarning%s: This will cause all nice urls to result in 404 errors.%s'
             , '<p><strong>', '</strong>', '</p>');
+    }
+
+    private function validateSlugs($slugs, $recordId, $recordType)
+    {
+        $currentSlugs = MOASNiceUrls_Helpers_Slugs::getRecordsSlugs($recordId, $recordType);
+        $filteredSlugs = array_filter($slugs, array(new MOASNiceUrls_Filters_ExistingSlugs($currentSlugs), 'filter'));
+        $errors = [];
+        foreach ($filteredSlugs as $slug) {
+            if (MOASNiceUrls_Helpers_Slugs::checkSlugExists($slug['text'])) {
+                $errors[] = $slug['text'];
+            }
+        }
+        return $errors;
+    }
+
+    private function buildErrorString($errors)
+    {
+        $string = "The following ";
+        $string .= count($errors) > 1 ? 'slugs ' : 'slug ';
+        $string .= "are already in use ";
+        $separator = "";
+        foreach ($errors as $error) {
+            $string .=  $separator . "'" .  $error . "' ";
+            $separator = ", ";
+        }
+
+        return MOASNiceUrls_Helpers_String::replaceLast(',', 'and ', $string);
     }
 }

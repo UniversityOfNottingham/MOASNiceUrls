@@ -54,4 +54,14 @@ class MOASNiceUrls_Helpers_String
 
         return implode(array_slice($parts, 0, $last_part));
     }
+
+    public static function replaceLast($needle, $with, $haystack)
+    {
+        $pos = strrpos($haystack, $needle);
+        if($pos !== false)
+        {
+            $haystack = substr_replace($haystack, $with, $pos, strlen($needle));
+        }
+        return $haystack;
+    }
 }
