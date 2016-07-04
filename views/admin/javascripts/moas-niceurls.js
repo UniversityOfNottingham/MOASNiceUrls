@@ -28,8 +28,8 @@ Omeka.MOASUrlStuff = {};
                 slug: elem.val()
             },
             success: function (response) {
+                var errorID = elem.attr('id').split('-', 3).join('-')+'-error';
                 if (response.exists) {
-                    var errorID = elem.attr('id').split('-', 3).join('-')+'-error';
                     $('#' + errorID).removeClass('visually-hidden')
                 } else {
                     $('#' + errorID).addClass('visually-hidden')

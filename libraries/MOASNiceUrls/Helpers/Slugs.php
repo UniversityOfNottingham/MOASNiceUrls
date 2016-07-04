@@ -52,7 +52,7 @@ class MOASNiceUrls_Helpers_Slugs
         return MOASNiceUrls_Helpers_String::truncateWords($slug, $length);
     }
 
-    private static function getSlugElementID()
+    protected static function getSlugElementID()
     {
         $db = get_db();
         return  $db->getTable('MOASNiceUrlsElement')->getSlugElement()->id;
