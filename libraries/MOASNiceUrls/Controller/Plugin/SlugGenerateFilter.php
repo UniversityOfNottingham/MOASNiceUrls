@@ -74,13 +74,13 @@ class MOASNiceUrls_Controller_Plugin_SlugGenerateFilter extends Zend_Controller_
                     'class' => 'js-moas-slug-input',
                     'onChange' => 'Omeka.MOASUrlStuff.checkSlug(this)'
                 )
-            ).
+            ) .
             get_view()->formButton('', 'Generate', array(
                 'class' => 'js-moas-slug-generate',
                 'data-target' => $args['input_name_stem'] . '[text]',
-                'onClick' => 'Omeka.MOASUrlStuff.generateSlug("'.$args['input_name_stem'] . '[text]'.'")'
-            )).
-            "<div id='". $errorID . "' class='visually-hidden validation-error'>This slug already exists, please choose another</div>";
+                'onClick' => 'Omeka.MOASUrlStuff.generateSlug("' . $args['input_name_stem'] . '[text]' . '")'
+            )) .
+            "<div id='" . $errorID . "' class='visually-hidden validation-error'>This slug already exists, please choose another</div>";
 
         return $components;
     }
