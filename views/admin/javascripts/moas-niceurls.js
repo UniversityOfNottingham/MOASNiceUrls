@@ -1,4 +1,4 @@
-if (Omeka == typeof undefined) {
+if (typeof Omeka == "undefined") {
     var Omeka = {};
 }
 
