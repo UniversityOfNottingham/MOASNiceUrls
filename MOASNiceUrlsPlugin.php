@@ -101,7 +101,7 @@ class MOASNiceUrlsPlugin extends Omeka_Plugin_AbstractPlugin
         $string .= "are already in use ";
         $separator = "";
         foreach ($errors as $error) {
-            $string .=  $separator . "'" .  $error . "' ";
+            $string .= $separator . "'" . $error . "' ";
             $separator = ", ";
         }
 
