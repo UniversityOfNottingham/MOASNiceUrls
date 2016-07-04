@@ -27,7 +27,7 @@ class MOASNiceUrlsPlugin extends Omeka_Plugin_AbstractPlugin
     {
         if (is_admin_theme()) {
             $args['router']->addConfig(new Zend_Config_Ini(
-                __DIR__.'/routes.ini'
+                __DIR__ . '/routes.ini'
             ));
         } else {
             $router = $args['router'];
