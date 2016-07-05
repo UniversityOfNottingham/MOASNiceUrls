@@ -80,7 +80,8 @@ class MOASNiceUrlsPlugin extends Omeka_Plugin_AbstractPlugin
         $slugElement = MOASNiceUrls_Helpers_Slugs::getSlugElementID();
         $slugs = $elements[$slugElement];
 
-        $currentSlugs = MOASNiceUrls_Helpers_Slugs::getRecordsSlugs($record->id, $recordType);
+
+        $currentSlugs = is_null($record->id) ? array() : MOASNiceUrls_Helpers_Slugs::getRecordsSlugs($record->id, $recordType);
         $filteredSlugs = array_filter($slugs, array(new MOASNiceUrls_Filters_ExistingSlugs($currentSlugs), 'filter'));
         $errors = [];
         foreach ($filteredSlugs as $slug) {
