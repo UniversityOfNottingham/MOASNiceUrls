@@ -11,6 +11,14 @@
 class MOASNiceUrls_Helpers_String
 {
     /**
+     * Holds
+     */
+    const PATTERNS = array(
+        'punctuation' => '/[^a-z\d ]+/i',
+        'punctuationWithSpaces' => '/[^a-z\d]+/i'
+    );
+
+    /**
      * @param $string
      * @param null $count
      * @param int $start
@@ -25,11 +33,16 @@ class MOASNiceUrls_Helpers_String
      * Removes all punctuation but spaces from the supplied string
      *
      * @param string $string the string to strip punctuation from
+     * @param bool $ignoreSpaces Should spaces be stripped along with punctuation
      * @return string
      */
-    public static function stripPunctuation($string)
+    public static function stripPunctuation($string, $ignoreSpaces = true)
     {
-        return preg_replace('/[^a-z\d ]+/i', '', $string);
+        if ($ignoreSpaces) {
+            return preg_replace(static::PATTERNS['punctuation'], '', $string);
+        } else {
+            return preg_replace(static::PATTERNS['punctuationWithSpaces'], '', $string);
+        }
     }
 
     /**
@@ -55,6 +68,14 @@ class MOASNiceUrls_Helpers_String
         return implode(array_slice($parts, 0, $last_part));
     }
 
+    /**
+     * Replace the last instance of a given string.
+     *
+     * @param string $needle the string to replace
+     * @param string $with what to replace $needle with
+     * @param string $haystack the string to replace it in
+     * @return string
+     */
     public static function replaceLast($needle, $with, $haystack)
     {
         $pos = strrpos($haystack, $needle);
@@ -63,5 +84,21 @@ class MOASNiceUrls_Helpers_String
             $haystack = substr_replace($haystack, $with, $pos, strlen($needle));
         }
         return $haystack;
+    }
+
+    /**
+     * Check the string for punctuation
+     *
+     * @param string $string the string to check
+     * @param bool $ignoreSpaces Should spaces be ignored
+     * @return int
+     */
+    public static function hasPunctuation($string, $ignoreSpaces = true)
+    {
+        if ($ignoreSpaces) {
+            return preg_match(static::PATTERNS['punctuation'], $string);
+        } else {
+            return preg_match(static::PATTERNS['punctuationWithSpaces'], $string);
+        }
     }
 }

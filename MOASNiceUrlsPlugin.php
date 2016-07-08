@@ -85,27 +85,14 @@ class MOASNiceUrlsPlugin extends Omeka_Plugin_AbstractPlugin
         $filteredSlugs = array_filter($slugs, array(new MOASNiceUrls_Filters_ExistingSlugs($currentSlugs), 'filter'));
         $errors = [];
         foreach ($filteredSlugs as $slug) {
-            if (MOASNiceUrls_Helpers_Slugs::checkSlugExists($slug['text'])) {
-                $errors[] = $slug['text'];
+            $slugError = MOASNiceUrls_Helpers_Slugs::validate($slug['text']);
+            if (!empty($slugError)) {
+                $errors[$slug['text']] = $slugError[0];
             }
         }
 
-        if (!empty($errors)) {
-            $record->addError('URL Slug', $this->buildErrorString($errors));
+        foreach ($errors as $slug => $error) {
+            $record->addError("Slug - '" . $slug . "'", $error);
         }
-    }
-
-    private function buildErrorString($errors)
-    {
-        $string = "The following ";
-        $string .= count($errors) > 1 ? 'slugs ' : 'slug ';
-        $string .= "are already in use ";
-        $separator = "";
-        foreach ($errors as $error) {
-            $string .= $separator . "'" . $error . "' ";
-            $separator = ", ";
-        }
-
-        return MOASNiceUrls_Helpers_String::replaceLast(',', 'and ', $string);
     }
 }
