@@ -74,6 +74,13 @@ class MOASNiceUrls_Helpers_Slugs
         return  $db->getTable('MOASNiceUrlsElement')->getSlugElement()->id;
     }
 
+    /**
+     * Get all the slug entries for the given record
+     *
+     * @param int $id The id of the record
+     * @param string $type record type, either 'Item' or 'Collection'
+     * @return array
+     */
     public static function getRecordsSlugs($id, $type)
     {
         $elementID = static::getSlugElementID();
@@ -91,5 +98,24 @@ class MOASNiceUrls_Helpers_Slugs
         }
 
         return $slugs;
+    }
+
+    /**
+     * Validate the given slug
+     *
+     * @param string $slug the slug to validate
+     * @return array
+     */
+    public static function validate($slug)
+    {
+        $error = [];
+        if (strlen($slug) > 255) {
+            $error[] = "Slugs cannot be more than 255 characters long";
+        } else if (MOASNiceUrls_Helpers_String::hasPunctuation($slug)) {
+            $error[] = "Slugs can only contain letters and numbers.";
+        } else if (static::checkSlugExists($slug)) {
+            $error[] = 'This slug is already in use, please enter another.';
+        }
+        return $error;
     }
 }
