@@ -11,14 +11,6 @@
 class MOASNiceUrls_Helpers_String
 {
     /**
-     * Holds
-     */
-    const PATTERNS = array(
-        'punctuation' => '/[^a-z\d ]+/i',
-        'punctuationWithSpaces' => '/[^a-z\d]+/i'
-    );
-
-    /**
      * @param $string
      * @param null $count
      * @param int $start
@@ -38,10 +30,11 @@ class MOASNiceUrls_Helpers_String
      */
     public static function stripPunctuation($string, $ignoreSpaces = true)
     {
+        $patterns = static::getPatterns();
         if ($ignoreSpaces) {
-            return preg_replace(static::PATTERNS['punctuation'], '', $string);
+            return preg_replace($patterns['punctuation'], '', $string);
         } else {
-            return preg_replace(static::PATTERNS['punctuationWithSpaces'], '', $string);
+            return preg_replace($patterns['punctuationWithSpaces'], '', $string);
         }
     }
 
@@ -95,10 +88,25 @@ class MOASNiceUrls_Helpers_String
      */
     public static function hasPunctuation($string, $ignoreSpaces = true)
     {
+        $patterns = static::getPatterns();
         if ($ignoreSpaces) {
-            return preg_match(static::PATTERNS['punctuation'], $string);
+            return preg_match($patterns['punctuation'], $string);
         } else {
-            return preg_match(static::PATTERNS['punctuationWithSpaces'], $string);
+            return preg_match($patterns['punctuationWithSpaces'], $string);
         }
+    }
+
+
+    /**
+     * Get an array of regex patterns to be used for various tasks
+     *
+     * @return array
+     */
+    private static function getPatterns()
+    {
+        return array(
+            'punctuation' => '/[^a-z\d ]+/i',
+            'punctuationWithSpaces' => '/[^a-z\d]+/i'
+        );
     }
 }
