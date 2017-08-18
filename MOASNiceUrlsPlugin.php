@@ -13,6 +13,7 @@ class MOASNiceUrlsPlugin extends Omeka_Plugin_AbstractPlugin
     protected $_hooks = array(
         'admin_head',
         'before_save_item',
+        'before_save_record',
         'define_routes',
         'initialize',
         'uninstall_message'
@@ -34,6 +35,12 @@ class MOASNiceUrlsPlugin extends Omeka_Plugin_AbstractPlugin
         $this->validateSlugs($args['post']['Elements'], $args['record'], 'Collection');
     }
 
+    public function hookBeforeSaveRecord($args)
+    {
+        if ($args['record'] instanceof ElementText && $args['record']->element_id == MOASNiceUrls_Helpers_Slugs::getSlugElementID()) {
+            $this->modifySlug($args['record']);
+        }
+    }
 
     public function hookDefineRoutes($args)
     {
@@ -94,5 +101,11 @@ class MOASNiceUrlsPlugin extends Omeka_Plugin_AbstractPlugin
         foreach ($errors as $slug => $error) {
             $record->addError("Slug - '" . $slug . "'", $error);
         }
+    }
+
+    private function modifySlug($record)
+    {
+        /** @var ElementText $record */
+        $record->setText(strtolower($record->getText()));
     }
 }
