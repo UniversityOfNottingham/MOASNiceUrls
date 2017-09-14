@@ -51,7 +51,7 @@ class MOASNiceUrls_Helpers_Slugs
     /**
      * Create a url slug based of the given string
      *
-     * Strips punctuation and spaces, camel cases and truncates to a max of 40 characters
+     * Strips punctuation and spaces, lower cases and truncates to a max of 40 characters
      *
      * @param string $string String to turn into a slug
      * @return string string The created slug
@@ -59,7 +59,7 @@ class MOASNiceUrls_Helpers_Slugs
     public static function slugify($string, $length = 40)
     {
         $slug = MOASNiceUrls_Helpers_String::stripPunctuation($string);
-        $slug = ucwords($slug);
+        $slug = strtolower($slug);
         return MOASNiceUrls_Helpers_String::truncateWords($slug, $length);
     }
 
